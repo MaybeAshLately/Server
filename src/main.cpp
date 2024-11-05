@@ -1,6 +1,8 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <Narcoleptic.h>
+#include <SPI.h>
+#include <SD.h>
 
 //You can modify the following lines to match your application
 const uint8_t interruptToSlavePin[]={6};
@@ -12,9 +14,10 @@ const uint8_t ledPIN=8;
 uint8_t critcalNumberOfSignals;
 
 
-uint8_t measBuffer[126];
-unsigned long timeOfLastMeasurement=0;
-unsigned long time=0;
+uint8_t measBuffer[130]; // 126 bytes for measurment and last 4 for time
+uint32_t timeOfLastMeasurement=0;
+uint32_t time=0;
+const uint8_t CSPin=10;
 
 
 void readDataFromSlave(uint8_t slaveAddress, uint8_t slavePin);
@@ -23,10 +26,18 @@ void saveMeasurmentToFile(uint8_t slaveAddress);
 void check();
 
 void setup() {
+  
+  if (!SD.begin(CSPin)) while (1);
+
   for(int i=0;i<numberOfSlaves;++i)
   {
     pinMode(interruptToSlavePin[i],OUTPUT);
     digitalWrite(interruptToSlavePin[i],LOW);
+    if(!SD.exists(String(i)+".bin"))
+    {
+      File file = SD.open(String(i)+".bin",FILE_WRITE);
+      if(file) file.close();
+    } 
   }
   
   pinMode(ledPIN,OUTPUT);
@@ -131,5 +142,8 @@ void readDataFromSlave(uint8_t slaveAddress, uint8_t slavePin)
 
 void saveMeasurmentToFile(uint8_t slaveAddress)
 {
-
+   File file = SD.open(String(slaveAddress)+".bin",FILE_WRITE);
+   if(!file) return;
+   file.write(measBuffer,130);
+   file.close();
 }
