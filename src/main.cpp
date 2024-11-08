@@ -6,7 +6,7 @@
 
 //You can modify the following lines to match your application
 const uint8_t interruptToSlavePin[]={6};
-const uint8_t slaveAddresses[]={0};
+const uint8_t slaveAddresses[]={8};
 const uint8_t numberOfSlaves=1;
 const int interval=600;
 const uint8_t ledPIN=8;
