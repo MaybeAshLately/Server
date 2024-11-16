@@ -34,6 +34,7 @@ void sendLatestMeasurement(uint8_t slaveAddress);
 void clearHistoricData(uint8_t slaveAddress);
 void sendHistoricData(uint8_t slaveAddress);
 void setNewCritcalNumberOfSignals();
+void sendAck();
 
 void setup() {
   
@@ -199,6 +200,7 @@ void sendListOfSlaves()
 void endAlarm()
 {
   digitalWrite(ledPIN,LOW);
+  sendAck();
 }
 
 
@@ -248,6 +250,8 @@ void clearHistoricData(uint8_t slaveAddress)
   SD.remove(String(slaveAddress)+".bin");
   File file = SD.open(String(slaveAddress)+".bin",FILE_WRITE);
   if(file) file.close();
+  sendAck();
+  performMeasurmentsFromSlaves();
 }
 
 
@@ -308,4 +312,24 @@ void sendHistoricData(uint8_t slaveAddress)
 void setNewCritcalNumberOfSignals()
 {
   critcalNumberOfSignals=messageBuffer[7];
+  sendAck();
+}
+
+
+void sendAck()
+{
+  memset(messageBuffer,0,20);
+
+  messageBuffer[0]=7;
+  messageBuffer[1] = time & 0xFF;
+  messageBuffer[2] = (time >> 8) & 0xFF;
+  messageBuffer[3] = (time >> 16) & 0xFF;
+  messageBuffer[4] = (time >> 24) & 0xFF;
+  messageBuffer[5]=128;
+  
+  for(uint8_t i=0;i<7;++i)
+  {
+   Serial.write(messageBuffer[i]);
+   Serial.flush();
+  }
 }
