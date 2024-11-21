@@ -6,7 +6,7 @@
 
 //You can modify the following lines to match your application
 const uint8_t interruptToSlavePin[]={6};
-const uint8_t slaveAddresses[]={8};
+const uint8_t slaveAddresses[]={10};
 const uint8_t numberOfSlaves=1;
 const int interval=600;
 const uint8_t ledPIN=8;
@@ -208,11 +208,11 @@ void sendLatestMeasurement(uint8_t slaveAddress)
 {
   memset(messageBuffer,0,20);
 
-  messageBuffer[0]=133;
-  messageBuffer[1] = timeOfLastMeasurement & 0xFF;
-  messageBuffer[2] = (timeOfLastMeasurement >> 8) & 0xFF;
-  messageBuffer[3] = (timeOfLastMeasurement >> 16) & 0xFF;
-  messageBuffer[4] = (timeOfLastMeasurement >> 24) & 0xFF;
+  messageBuffer[0]=137;
+  messageBuffer[1] = time & 0xFF;
+  messageBuffer[2] = (time >> 8) & 0xFF;
+  messageBuffer[3] = (time >> 16) & 0xFF;
+  messageBuffer[4] = (time >> 24) & 0xFF;
   messageBuffer[5]=4;
   messageBuffer[6]=slaveAddress;
 
@@ -232,9 +232,9 @@ void sendLatestMeasurement(uint8_t slaveAddress)
 
   uint8_t buffer[32];
   uint8_t idx=0;
-  while(file.available() &&idx<126)
+  while(file.available() &&idx<130)
   {
-    int numberOfBytesToRead=min(32,126-idx);
+    int numberOfBytesToRead=min(32,130-idx);
     file.read(buffer,numberOfBytesToRead);
     Serial.write(buffer,numberOfBytesToRead);
     Serial.flush();
@@ -265,10 +265,10 @@ void sendHistoricData(uint8_t slaveAddress)
   memset(messageBuffer,0,20);
 
   messageBuffer[0]=130+7;
-  messageBuffer[1] = timeOfLastMeasurement & 0xFF;
-  messageBuffer[2] = (timeOfLastMeasurement >> 8) & 0xFF;
-  messageBuffer[3] = (timeOfLastMeasurement >> 16) & 0xFF;
-  messageBuffer[4] = (timeOfLastMeasurement >> 24) & 0xFF;
+  messageBuffer[1] = time & 0xFF;
+  messageBuffer[2] = (time >> 8) & 0xFF;
+  messageBuffer[3] = (time >> 16) & 0xFF;
+  messageBuffer[4] = (time >> 24) & 0xFF;
   messageBuffer[5]=64;
   messageBuffer[6]=slaveAddress;
 
