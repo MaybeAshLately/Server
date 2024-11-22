@@ -44,9 +44,9 @@ void setup() {
   {
     pinMode(interruptToSlavePin[i],OUTPUT);
     digitalWrite(interruptToSlavePin[i],LOW);
-    if(!SD.exists(String(i)+".bin"))
+    if(!SD.exists(String(slaveAddresses[i])+".bin"))
     {
-      File file = SD.open(String(i)+".bin",FILE_WRITE);
+      File file = SD.open(String(slaveAddresses[i])+".bin",FILE_WRITE);
       if(file) file.close();
     } 
   }
