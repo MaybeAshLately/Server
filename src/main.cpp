@@ -281,7 +281,6 @@ void sendHistoricData(uint8_t slaveAddress)
 
   if(position<0)
   {
-    messageBuffer[6]=65;
     position=0;
   }
   

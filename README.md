@@ -50,7 +50,6 @@ Data is send in binary format in following structure:
   - 16 - demand of historic measure, from phone (in data section info how many lines behind)
   - 32 - clean file, from phone,
   - 64 - historic measure, from server,
-  - 65 - historic measure and end of file info, from server,
   - 128 - ack of setting new critical level/turining off the alarm/erasing histroic data,
 - One byte - address, for messages that concern certain slave, eg. demanding of data,
 - Data of various size (max is 137 bytes).
