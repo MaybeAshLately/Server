@@ -67,17 +67,17 @@ void setup() {
 
 void loop() {
 
-  Narcoleptic.delay(4000);
+  Narcoleptic.delay(1000);
   long start=millis();
   delay(1000);
   if((timeOfLastMeasurement+interval)<=time)
   {
-    timeOfLastMeasurement=time+5;
+    timeOfLastMeasurement=time+2;
     performMeasurmentsFromSlaves();
   }
   long end=millis();
   
-  time=time+5+((end-start)/1000);
+  time=time+2+((end-start)/1000);
 }
 
 

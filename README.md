@@ -86,6 +86,8 @@ To connect Arduino to HC-06:
 
 **Attention** during uploding programe sketch to Arduino you must unplug the Tx and Rx wires - if anything is connected to hardware Serial it will cause uploading error.
 
+**Attention** if during its operation server disconnects from power grid, the time of measurements will be calculated inaccrodingly. 
+
 
 # Libraries
 The project uses following libraries:
